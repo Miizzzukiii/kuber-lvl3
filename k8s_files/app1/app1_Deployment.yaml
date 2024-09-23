@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: app1-container
-        image: mary/app1
+        image: localhost:5000/mary/app1:latest #создала registry локальный и туда запушила
         ports:
         - containerPort: 3000 # порт, на котором работает приложение
         env:
