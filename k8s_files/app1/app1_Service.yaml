@@ -9,4 +9,4 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
-      nodePort: 3001 #  порт для доступа извне
+      nodePort: 30001 #  порт для доступа извне
