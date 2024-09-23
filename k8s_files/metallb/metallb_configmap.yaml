@@ -1,0 +1,10 @@
+apiVersion: v1 #версия api кубера - в metallb обычно испрользуют эту 
+kind: ConfigMap
+metadata:
+  namespace: metallb-system #взяла из вывода после загрузки metallb через манифест
+  name: metallb-config
+data:
+  config: |
+    layer2:  #режим работы MetalLB , будет использовать ARP для назначения IP (есть еще для более сложных сетевых конфиг- BGP Border Gateway Protocol))
+      addresses:
+        - 192.168.1.254/24 #255 адресов (2 из которых зарез-адрес сети+ broadcats-255) от 192.168.1.1 до 192.168.1.254
