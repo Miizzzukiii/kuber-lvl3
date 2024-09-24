@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"networking.k8s.io/v1","kind":"NetworkPolicy","metadata":{"annotations":{},"name":"allow-all","namespace":"rook-ceph"},"spec":{"egress":[{"to":[{"podSelector":{}}]}],"ingress":[{"from":[{"podSelector":{}}]}],"podSelector":{},"policyTypes":["Ingress","Egress"]}}
+  creationTimestamp: "2024-09-24T17:10:35Z"
+  generation: 1
+  name: allow-all
+  namespace: rook-ceph
+  resourceVersion: "4588"
+  uid: 8ebe5af2-0f31-4037-9524-67103e76ab9d
+spec:
+  egress:
+  - to:
+    - podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
