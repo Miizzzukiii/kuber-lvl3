@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app1-ingress
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix 
+        backend:
+          service:
+            name: app1-service
+            port:
+              number: 3000
+#если path: / Prefix то оно отправит все запросы на example.com/* 
+#а если  path: /app Exact то только на example.com/app/*
+    
