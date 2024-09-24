@@ -64,10 +64,5 @@ spec:
   storageClassName: rook-ceph-storage-class
 
 
-  #output kubectl apply -f ceph.yaml
-#cephblockpool.ceph.rook.io/app1-data-pool unchanged
-#cephblockpool.ceph.rook.io/metadata-pool unchanged
-#storageclass.storage.k8s.io/rook-ceph-storage-class unchanged
-#cephcluster.ceph.rook.io/rook-ceph-cluster unchanged
-#persistentvolumeclaim/app1-pvc unchanged
+  
 
