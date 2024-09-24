@@ -1,0 +1,70 @@
+---
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: app1_dataPool
+  namespace: rook-ceph
+spec:
+  replication:
+    size: 2
+  failureDomain: host #данные будут реплицированы по различным хостам в кластере - отказоустойчивость
+
+---
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: metadataPool
+  namespace: rook-ceph
+spec:
+  failureDomain: host
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: rook_ceph_StorageClass
+  namespace: rook-ceph
+provisioner: ceph.rook.io/block #провайдер для динамического выделения хранилища — Rook Ceph
+parameters:
+  blockPool: app1_dataPool #пул для хранения данных самого приложения- app1
+  dataPool: metadataPool #пул(логическая группа) для хранения метаданных
+  reclaimPolicy: Delete #когда PVC удаляется, PV также будет удален
+  
+---
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook_ceph_cluster
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: ceph/ceph:v17.2.0
+  dataDirHostPath: /var/lib/rook
+  storage:
+    useAllNodes: true
+    useAllDevices: true
+  network:
+    provider: calico # обеспечивает сетевое взаимодействие, гибкая настройка + интеграция с NetworkPolicies
+  resources:
+    limits: # макс кол-во ресурсов, кот container может использовать 
+      cpu: "1000m"
+      memory: "2Gi"
+    requests: # количество ресурсов, которое будет выделено контейнеру
+      cpu: "500m"
+      memory: "1Gi"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app1_pvc
+  namespace: default #где и приложение 
+spec:
+  accessModes:
+    - ReadWriteMany #позволяет нескольким подам одновременно монтировать один и тот же PV-блоч ус-во (rwx)
+    #ceph его поддерж + у меня же 2 пода с приложением 
+    #!!! данные находятся в ceph, но доступ к ним через pv которые нах в подах app1
+  resources:
+    requests:
+      storage: 3Gi  
+  storageClassName: rook_ceph_StorageClass
