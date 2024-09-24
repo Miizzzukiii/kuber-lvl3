@@ -23,3 +23,11 @@ spec:
         - name: NODE_ENV
           value: "testing"
         command: ["npm", "run", "dev"] # команда запуска приложения
+        volumeMounts:
+        - name: app1-storage
+          mountPath: /usr/src/app/data # путь внутри контейнера вашего приложения, куда будет примонтирован PV-из которого будет доступ 
+          #к данным в ceph пуле
+      volumes:
+      - name: app1-storage
+        persistentVolumeClaim:
+          claimName: app1-pvc # Указываем PVC для использования Ceph как хранилища
