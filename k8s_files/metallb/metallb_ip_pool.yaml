@@ -1,5 +1,5 @@
 apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
+kind: IPAddressPool #пул ip адресов для их назначения сервисам 
 metadata:
   name: first-pool
   namespace: metallb-system
