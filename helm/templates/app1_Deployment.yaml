@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app1
+  name: {{ .Values.appName }}
   labels:
-    app: app1
+    app: {{ .Values.appName }}
 spec:
-  replicas: 2 # количество реплик для отказоустойчивости
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: app1
+      app: {{ .Values.appName }}
   template:
     metadata:
       labels:
-        app: app1
+        app: {{ .Values.appName }}
     spec:
       containers:
-      - name: app1-container
-        image: localhost:5000/mary/app1:latest #создала registry локальный и туда запушила
+      - name: {{ .Values.appContainerName }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         ports:
-        - containerPort: 3000 # порт, на котором работает приложение
+        - containerPort: {{ .Values.containerPort }}
         env:
         - name: NODE_ENV
-          value: "testing"
-        command: ["npm", "run", "dev"] # команда запуска приложения
+          value: {{ .Values.env.NODE_ENV }}
+        command: ["npm", "run", "dev"] 
