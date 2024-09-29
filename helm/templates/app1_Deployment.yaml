@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  labels:
+    app: app1
+spec:
+  replicas: 2 # количество реплик для отказоустойчивости
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: app1-container
+        image: localhost:5000/mary/app1:latest #создала registry локальный и туда запушила
+        ports:
+        - containerPort: 3000 # порт, на котором работает приложение
+        env:
+        - name: NODE_ENV
+          value: "testing"
+        command: ["npm", "run", "dev"] # команда запуска приложения
